@@ -1,0 +1,84 @@
+<?php
+
+namespace App\Controller;
+
+use App\Entity\Livres;
+use App\Form\LivresType;
+use App\Repository\LivresRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+
+final class LivresController extends AbstractController
+{
+    #[Route('/admin/livres/delete/{id}', name: 'app_livres_delete')]
+    public function delete(LivresRepository $rep, EntityManagerInterface $em, $id): Response
+    {
+        $livre = $rep->find($id);
+
+        if (!$livre) {
+            throw $this->createNotFoundException("Livre avec ID {$id} introuvable.");
+        }
+
+        $em->remove($livre);
+        $em->flush();
+
+        $this->addFlash('success', 'Livre supprimé avec succès.');
+        return $this->redirectToRoute('app_livres_all');
+        
+    }
+
+    #[Route('/admin/livres/all', name: 'app_livres_all')]
+public function all(LivresRepository $rep, PaginatorInterface $paginator, Request $request): Response
+{
+    $query = $rep->createQueryBuilder('l')->getQuery();
+
+    $pagination = $paginator->paginate(
+        $query,
+        $request->query->getInt('page', 1),
+        10
+    );
+
+    return $this->render('livres/all.html.twig', [
+        'pagination' => $pagination // ✅ ici le nom doit être "pagination"
+    ]);
+}
+
+    
+
+    #[Route('/admin/livres/show2', name: 'app_livres_show2')]
+    public function show2(LivresRepository $rep): Response
+    {
+        $livres = $rep->findBy(['titre' => 'titre 1']);
+        dd($livres);
+    }
+
+    #[Route('/admin/livres/show/{id}', name: 'app_livres_show')]
+    public function show(Livres $livre): Response
+    {
+        return $this->render('livres/show.html.twig', ['livres' => $livre]);
+    }
+
+    #[Route('/admin/livres/create', name: 'app_livres_create')]
+    public function create(EntityManagerInterface $em, Request $request): Response
+    {
+        $Livres = new Livres();
+        $form = $this->createForm(LivresType::class, $Livres);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($Livres);
+            $em->flush();
+            $this->addFlash("success","le livre".$Livres->getTitre()."a été ajoutée");
+
+            return $this->redirectToRoute('admin_livres');
+        }
+
+        return $this->render('livres/create.html.twig', [
+            'f' => $form->createView(),
+        ]);
+    }
+}

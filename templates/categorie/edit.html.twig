@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier une catégorie{% endblock %}
+
+{% block body %}
+<h1>Modifier la catégorie : {{ categorie.Libelle }}</h1>
+
+{{ form_start(f) }}
+    {{ form_widget(f) }}
+
+{{ form_end(f) }}
+{% endblock %}
