@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Livres;
+use App\Form\livreType;
 use App\Form\LivresType;
+use App\Repository\livreRepository;
 use App\Repository\LivresRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -14,6 +16,33 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class LivresController extends AbstractController
 {
+
+    #[Route('/admin/livre/{id}/edit', name: 'app_livres_edit')]
+    public function edit(int $id, LivresRepository $rep, EntityManagerInterface $em, Request $request): Response
+    {
+        // 1. Récupérer la catégorie depuis la base
+        $livre = $rep->find($id);
+
+        if (!$livre) {
+            throw $this->createNotFoundException("Livre introuvable !");
+        }
+
+        // 2. Créer le formulaire pré-rempli avec les données existantes
+        $form = $this->createForm(LivresType::class, $livre);
+        $form->handleRequest($request);
+
+        // 3. Enregistrer les modifications si le formulaire est soumis et valide
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->flush(); // Pas besoin de persist, l'objet est déjà managé
+            return $this->redirectToRoute('app_livres_all');
+        }
+
+        // 4. Afficher le formulaire
+        return $this->render('livres/edit.html.twig', [
+            'f' => $form->createView(),
+            'livre' => $livre
+        ]);
+    }
     #[Route('/admin/livres/delete/{id}', name: 'app_livres_delete')]
     public function delete(LivresRepository $rep, EntityManagerInterface $em, $id): Response
     {
@@ -74,7 +103,7 @@ public function all(LivresRepository $rep, PaginatorInterface $paginator, Reques
             $em->flush();
             $this->addFlash("success","le livre".$Livres->getTitre()."a été ajoutée");
 
-            return $this->redirectToRoute('admin_livres');
+            return $this->redirectToRoute('app_livres_all');
         }
 
         return $this->render('livres/create.html.twig', [
