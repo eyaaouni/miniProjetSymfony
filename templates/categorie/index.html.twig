@@ -1,17 +1,34 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CategorieController!{% endblock %}
+{% block title %}Liste des Catégories{% endblock %}
 
 {% block body %}
+ <div class="container mt-4">
+  <h1 class="mb-4 text-center">Liste des Catégories</h1>
 
-<h1> Liste des categories </h1>
-<div class="d-flex justify-content-end">
-<a href="{{ path('admin_categorie_create') }}" class="btn btn-primary ">Ajouter une nouvelle categorie</a>
-</div>
-<ul>
-{% for cat in categories %}
- <li> {{cat.Libelle }} <a href="{{ path('admin_categorie_edit', {'id': cat.id}) }}">editer</a> <a href="#">voir details</a> </li>
-{% endfor %}
-</ul>
+  <div class="d-flex justify-content-end mb-3">
+   <a href="{{ path('admin_categorie_create') }}" class="btn btn-success">
+    Ajouter une nouvelle catégorie
+   </a>
+  </div>
 
+  <div class="list-group">
+   {% for cat in categories %}
+    <div class="list-group-item d-flex justify-content-between align-items-center">
+     <div>
+      <strong>{{ cat.Libelle }}</strong>
+     </div>
+     <div>
+      <a href="{{ path('admin_categorie_edit', {'id': cat.id}) }}" class="btn btn-sm btn-outline-primary me-2">Éditer</a>
+      <a href="{{ path('categorie_show', {'id': cat.id}) }}" class="btn btn-sm btn-outline-secondary">Voir détails</a>
+      <a href="{{ path('categorie_delete', {'id': cat.id}) }}" class="btn btn-sm btn-outline-secondary">Supprimer</a>
+     </div>
+    </div>
+   {% else %}
+    <div class="alert alert-info" role="alert">
+     Aucune catégorie trouvée.
+    </div>
+   {% endfor %}
+  </div>
+ </div>
 {% endblock %}

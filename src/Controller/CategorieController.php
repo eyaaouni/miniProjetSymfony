@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Categorie;
+use App\Entity\Livres;
 use App\Form\CategorieType;
 use App\Repository\CategorieRepository;
+use App\Repository\LivresRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request; // ✅ la bonne version
@@ -68,5 +70,27 @@ public function edit(int $id, CategorieRepository $rep, EntityManagerInterface $
         'categorie' => $categorie
     ]);
 }
+    #[Route('/admin/categorie/delete/{id}', name: 'categorie_delete')]
+    public function delete(CategorieRepository $rep, EntityManagerInterface $em, $id): Response
+    {
+        $categorie = $rep->find($id);
+
+        if (!$categorie) {
+            throw $this->createNotFoundException("categorie avec ID {$id} introuvable.");
+        }
+
+        $em->remove($categorie);
+        $em->flush();
+
+        $this->addFlash('success', 'categorie supprimée avec succès.');
+        return $this->redirectToRoute('admin_categorie');
+
+    }
+    #[Route('/admin/categorie/show/{id}', name: 'categorie_show')]
+    public function show(Categorie $categorie): Response
+    {
+        return $this->render('categorie/show.html.twig', ['categorie' => $categorie]);
+    }
+
 
 }

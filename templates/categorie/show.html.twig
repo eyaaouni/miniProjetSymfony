@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Espace Admin : détail d'un categorie{% endblock %}
+
+{% block body %}
+<h1>Détail du categorie</h1>
+    <div class="row">
+
+        <div class="col"></div>
+        <h2> {{ categorie.libelle }} </h2>
+        <h3>slug : {{ categorie.slug }}</h3>
+        <p> description : {{ categorie.description }}</p>
+
+    </div>
+{% endblock %}
