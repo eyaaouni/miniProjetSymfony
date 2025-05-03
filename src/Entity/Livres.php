@@ -14,22 +14,19 @@ class Livres
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255)]
     private ?string $titre = null;
 
-
-
-
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255)]
     private ?string $isbn = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $resume = null;
 
     #[ORM\Column(length: 255)]
@@ -41,8 +38,10 @@ class Livres
     #[ORM\Column]
     private ?float $prix = null;
 
-    #[ORM\ManyToOne(inversedBy: 'livres')]
-    private ?Categorie $cat = null;
+    #[ORM\ManyToOne(targetEntity: Categorie::class, inversedBy: 'livres')]
+    #[ORM\JoinColumn(name: "cat_id", referencedColumnName: "id")]
+    private ?Categorie $categorie = null;
+
 
     public function getId(): ?int
     {
@@ -54,16 +53,9 @@ class Livres
         return $this->titre;
     }
 
-    public function setTitre(?string $titre): static
+    public function setTitre(string $titre): static
     {
         $this->titre = $titre;
-
-        return $this;
-    }
-
-    public function setId(?int $id): static
-    {
-        $this->id = $id;
 
         return $this;
     }
@@ -73,7 +65,7 @@ class Livres
         return $this->isbn;
     }
 
-    public function setIsbn(?string $isbn): static
+    public function setIsbn(string $isbn): static
     {
         $this->isbn = $isbn;
 
@@ -85,7 +77,7 @@ class Livres
         return $this->slug;
     }
 
-    public function setSlug(?string $slug): static
+    public function setSlug(string $slug): static
     {
         $this->slug = $slug;
 
@@ -109,7 +101,7 @@ class Livres
         return $this->resume;
     }
 
-    public function setResume(string $resume): static
+    public function setResume(?string $resume): static
     {
         $this->resume = $resume;
 
@@ -152,14 +144,14 @@ class Livres
         return $this;
     }
 
-    public function getCat(): ?Categorie
+    public function getCategorie(): ?Categorie
     {
-        return $this->cat;
+        return $this->categorie;
     }
 
-    public function setCat(?Categorie $cat): static
+    public function setCategorie(?Categorie $categorie): static
     {
-        $this->cat = $cat;
+        $this->categorie = $categorie;
 
         return $this;
     }

@@ -3,6 +3,7 @@
 {% block title %}Liste des Catégories{% endblock %}
 
 {% block body %}
+
  <div class="container mt-4">
   <h1 class="mb-4 text-center">Liste des Catégories</h1>
 
@@ -14,14 +15,19 @@
 
   <div class="list-group">
    {% for cat in categories %}
+
     <div class="list-group-item d-flex justify-content-between align-items-center">
      <div>
-      <strong>{{ cat.Libelle }}</strong>
+      <strong>{{ cat.libelle ?? '' }}</strong>  {# Affiche correctement le libellé de la catégorie #}
      </div>
      <div>
       <a href="{{ path('admin_categorie_edit', {'id': cat.id}) }}" class="btn btn-sm btn-outline-primary me-2">Éditer</a>
       <a href="{{ path('categorie_show', {'id': cat.id}) }}" class="btn btn-sm btn-outline-secondary">Voir détails</a>
-      <a href="{{ path('categorie_delete', {'id': cat.id}) }}" class="btn btn-sm btn-outline-secondary">Supprimer</a>
+      <form method="post" action="{{ path('categorie_delete', {'id': cat.id}) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer cette catégorie ?');" style="display:inline;">
+       <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ cat.id) }}">
+       <button class="btn btn-sm btn-outline-danger">Supprimer</button>
+      </form>
+
      </div>
     </div>
    {% else %}
@@ -29,6 +35,7 @@
      Aucune catégorie trouvée.
     </div>
    {% endfor %}
+
   </div>
  </div>
 {% endblock %}

@@ -20,10 +20,12 @@ final class CategorieController extends AbstractController
     {
         $categories = $rep->findAll();
 
+
         return $this->render('categorie/index.html.twig', [
             'categories' => $categories,
         ]);
     }
+
 
     #[Route('/admin/categorie/create', name: 'admin_categorie_create')]
     public function create(EntityManagerInterface $em, Request $request): Response
@@ -35,7 +37,7 @@ final class CategorieController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($categorie);
             $em->flush();
-            $this->addFlash("success","la categorie".$categorie->getLibelle()."a été ajoutée");
+
 
             return $this->redirectToRoute('admin_categorie');
         }
@@ -70,22 +72,26 @@ public function edit(int $id, CategorieRepository $rep, EntityManagerInterface $
         'categorie' => $categorie
     ]);
 }
-    #[Route('/admin/categorie/delete/{id}', name: 'categorie_delete')]
+    #[Route('/admin/categorie/delete/{id}', name: 'categorie_delete', methods: ['POST'])]
     public function delete(CategorieRepository $rep, EntityManagerInterface $em, $id): Response
     {
         $categorie = $rep->find($id);
 
         if (!$categorie) {
-            throw $this->createNotFoundException("categorie avec ID {$id} introuvable.");
+            throw $this->createNotFoundException("Catégorie avec ID {$id} introuvable.");
+        }
+
+        // ✅ Vérifier s’il y a des livres liés
+        if (!$categorie->getLivres()->isEmpty()) {
+            return $this->redirectToRoute('admin_categorie');
         }
 
         $em->remove($categorie);
         $em->flush();
 
-        $this->addFlash('success', 'categorie supprimée avec succès.');
         return $this->redirectToRoute('admin_categorie');
-
     }
+
     #[Route('/admin/categorie/show/{id}', name: 'categorie_show')]
     public function show(Categorie $categorie): Response
     {

@@ -34,7 +34,7 @@ class LivresType extends AbstractType
                 'widget' => 'single_text'
             ])
             ->add('prix')
-            ->add('cat', EntityType::class, [
+            ->add('categorie', EntityType::class, [
                 'class' => Categorie::class,
 'choice_label' => 'id',])
             ->add("Save", SubmitType::class, [

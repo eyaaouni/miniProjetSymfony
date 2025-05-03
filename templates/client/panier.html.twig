@@ -1,0 +1,15 @@
+<h1>Votre Panier</h1>
+
+<ul>
+    {% for item in livres %}
+        <li>
+            {{ item.livre.titre }} ({{ item.quantity }}) - Prix Unitaire : {{ item.livre.prix }} €
+        </li>
+    {% else %}
+        <li>Votre panier est vide.</li>
+    {% endfor %}
+</ul>
+
+<p><strong>Total : {{ total }} €</strong></p>
+
+<a href="{{ path('client_livres_list') }}">Continuer vos achats</a>

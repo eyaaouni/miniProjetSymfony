@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+
 use App\Repository\CategorieRepository;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -22,13 +24,13 @@ class Categorie
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
     /**
      * @var Collection<int, Livres>
      */
-    #[ORM\OneToMany(targetEntity: Livres::class, mappedBy: 'cat')]
+    #[ORM\OneToMany(targetEntity: Livres::class, mappedBy: 'categorie')]
     private Collection $livres;
 
     public function __construct()
@@ -70,7 +72,7 @@ class Categorie
         return $this->description;
     }
 
-    public function setDescription(string $description): static
+    public function setDescription(?string $description): static
     {
         $this->description = $description;
 
@@ -89,7 +91,7 @@ class Categorie
     {
         if (!$this->livres->contains($livre)) {
             $this->livres->add($livre);
-            $livre->setCat($this);
+            $livre->setCategorie($this);
         }
 
         return $this;
@@ -99,8 +101,8 @@ class Categorie
     {
         if ($this->livres->removeElement($livre)) {
             // set the owning side to null (unless already changed)
-            if ($livre->getCat() === $this) {
-                $livre->setCat(null);
+            if ($livre->getCategorie() === $this) {
+                $livre->setCategorie(null);
             }
         }
 

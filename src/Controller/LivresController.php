@@ -55,7 +55,6 @@ final class LivresController extends AbstractController
         $em->remove($livre);
         $em->flush();
 
-        $this->addFlash('success', 'Livre supprimé avec succès.');
         return $this->redirectToRoute('app_livres_all');
         
     }
@@ -101,7 +100,6 @@ public function all(LivresRepository $rep, PaginatorInterface $paginator, Reques
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($Livres);
             $em->flush();
-            $this->addFlash("success","le livre".$Livres->getTitre()."a été ajoutée");
 
             return $this->redirectToRoute('app_livres_all');
         }
