@@ -9,6 +9,9 @@
                 <input type="text" name="search" class="form-control" placeholder="Rechercher un livre..." value="{{ app.request.get('search') }}">
                 <button class="btn btn-primary" type="submit">Rechercher</button>
             </div>
+            <div class="mt-4">
+                <a href="{{ path('client_panier_show') }}" class="btn btn-outline-primary">Voir mon panier</a>
+            </div>
         </form>
 
         <div class="row">
@@ -16,7 +19,7 @@
                 <div class="col-md-4">
                     <div class="card mb-4 shadow-sm">
                         {% if livre.image %}
-                            <img src="{{ asset('uploads/' ~ livre.image) }}" class="card-img-top" alt="{{ livre.titre }}" style="height: 300px; object-fit: cover;">
+                            <img src="{{ livre.image }}" alt="{{ livre.titre }}" style="max-width: 150px;">
                         {% else %}
                             <img src="https://via.placeholder.com/300x300" class="card-img-top" alt="Pas d'image">
                         {% endif %}
@@ -40,8 +43,6 @@
             {% endfor %}
         </div>
 
-        <div class="mt-4">
-            <a href="{{ path('client_panier_show') }}" class="btn btn-outline-primary">Voir mon panier</a>
-        </div>
+
     </div>
 {% endblock %}

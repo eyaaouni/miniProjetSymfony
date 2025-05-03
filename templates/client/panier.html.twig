@@ -1,15 +1,27 @@
-<h1>Votre Panier</h1>
+{% extends 'base.html.twig' %}
 
-<ul>
-    {% for item in livres %}
-        <li>
-            {{ item.livre.titre }} ({{ item.quantity }}) - Prix Unitaire : {{ item.livre.prix }} €
-        </li>
-    {% else %}
-        <li>Votre panier est vide.</li>
-    {% endfor %}
-</ul>
+{% block body %}
+<h1 class="mb-4">🛒 Votre Panier</h1>
 
-<p><strong>Total : {{ total }} €</strong></p>
+{% if livres is not empty %}
+    <ul class="list-group mb-3">
+        {% for item in livres %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>{{ item.livre.titre }}</strong><br>
+                    <small>Quantité : {{ item.quantity }} | Prix unitaire : {{ item.livre.prix }} €</small>
+                </div>
+                <span class="badge bg-primary rounded-pill">{{ (item.livre.prix * item.quantity)|number_format(2, ',', '.') }} €</span>
+            </li>
+        {% endfor %}
+    </ul>
 
-<a href="{{ path('client_livres_list') }}">Continuer vos achats</a>
+    <p class="fs-5"><strong>Total : {{ total|number_format(2, ',', '.') }} €</strong></p>
+{% else %}
+    <div class="alert alert-info">Votre panier est vide.</div>
+{% endif %}
+
+<a href="{{ path('client_livres_list') }}" class="btn btn-success">
+    Continuer vos achats
+</a>
+{% endblock %}

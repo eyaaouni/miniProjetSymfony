@@ -36,12 +36,12 @@ class LivresFixtures extends Fixture
                 ->setEditeur($faker->company)
                 ->setPrix($faker->randomFloat(2, 0, 100))
                 ->setDateEdition($faker->dateTimeThisCentury)
-                ->setImage("https://picsum.photos/200/?id=" . $i)
+                ->setImage("https://bookthumbs.com/thumbs".$i . "/200/300")
                 ->setResume($faker->text)
                 ->setSlug($this->generateSlug($titre));
 
             // Associer une catégorie aléatoire
-            $livre->setcat($faker->randomElement($categories));
+            $livre->setCategorie($faker->randomElement($categories));
 
             $manager->persist($livre);
         }

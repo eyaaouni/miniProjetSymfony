@@ -50,7 +50,6 @@ class ClientLivreController extends AbstractController
 
         $session->set('panier', $panier);
 
-        $this->addFlash('success', 'Livre ajouté au panier !');
 
         return $this->redirectToRoute('client_livres_list');
     }
