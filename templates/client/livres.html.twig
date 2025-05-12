@@ -19,6 +19,8 @@
             <div class="mt-3">
                 <button class="btn btn-primary" type="submit">Rechercher</button>
                 <a href="{{ path('client_panier_show') }}" class="btn btn-outline-primary ms-3">Voir mon panier</a>
+                <a href="{{ path('client_commandes_historique') }}" class="btn btn-outline-secondary">Historique de mes commandes</a>
+
             </div>
         </form>
 
@@ -39,8 +41,33 @@
                             </p>
                             <p><strong>{{ livre.prix }} dt</strong></p>
                             <a href="{{ path('client_livres_show', {id: livre.id}) }}" class="btn btn-success">Voir détail</a>
-                            <a href="{{ path('client_panier_add', {id: livre.id}) }}" class="btn btn-danger">Ajouter au panier</a>
+                            <!-- Bouton pour ouvrir la modale -->
+                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalQuantite{{ livre.id }}">Ajouter au panier</button>
                         </div>
+                        <!-- Modal pour choisir la quantité -->
+                        <div class="modal fade" id="modalQuantite{{ livre.id }}" tabindex="-1" aria-labelledby="modalLabel{{ livre.id }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <form method="post" action="{{ path('client_panier_add', {id: livre.id}) }}">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modalLabel{{ livre.id }}">Quantité pour "{{ livre.titre }}"</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label for="quantite{{ livre.id }}" class="form-label">Quantité :</label>
+                                                <input type="number" min="1" value="1" name="quantite" class="form-control" id="quantite{{ livre.id }}">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Ajouter</button>
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             {% else %}

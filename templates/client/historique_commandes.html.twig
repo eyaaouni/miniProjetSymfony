@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1>Mes commandes</h1>
+
+        {% if commandes is empty %}
+            <div class="alert alert-info">Vous n'avez passé aucune commande pour le moment.</div>
+        {% else %}
+            <table class="table table-striped mt-4">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Total</th>
+                    <th>Mode de paiement</th>
+                    <th>Statut</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for commande in commandes %}
+                    <tr>
+                        <td>{{ commande.dateCommande|date('d/m/Y H:i') }}</td>
+                        <td>{{ commande.total }} DT</td>
+                        <td>{{ commande.modePaiement }}</td>
+                        <td>{{ commande.statut }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+{% endblock %}

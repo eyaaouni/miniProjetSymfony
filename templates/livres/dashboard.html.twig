@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawCharts);
+
+    function drawCharts() {
+        // Livre le plus vendu
+        var topLivre = google.visualization.arrayToDataTable([
+            ['Livre', 'Quantité'],
+            {% for livre in topLivre %}
+            ['{{ livre.titre }}', {{ livre.total }}],
+            {% endfor %}
+        ]);
+
+        var options1 = {
+            title: 'Livre le plus vendu',
+            is3D: true,
+        };
+
+        var chart1 = new google.visualization.PieChart(document.getElementById('topLivreChart'));
+        chart1.draw(topLivre, options1);
+
+        // Commandes par mois
+        var commandes = google.visualization.arrayToDataTable([
+            ['Mois', 'Commandes'],
+            {% for row in commandesParMois %}
+            ['{{ row.mois }}', {{ row.total }}],
+            {% endfor %}
+        ]);
+
+        var options2 = {
+            title: 'Commandes par Mois',
+            hAxis: {title: 'Mois'},
+            vAxis: {title: 'Total'},
+        };
+
+        var chart2 = new google.visualization.ColumnChart(document.getElementById('commandesParMoisChart'));
+        chart2.draw(commandes, options2);
+    }
+</script>
+
+<div id="topLivreChart" style="width: 600px; height: 400px;"></div>
+<div id="commandesParMoisChart" style="width: 600px; height: 400px;"></div>
+{% endblock %}

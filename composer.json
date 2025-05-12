@@ -15,6 +15,7 @@
         "knplabs/knp-paginator-bundle": "^6.8",
         "phpdocumentor/reflection-docblock": "^5.6",
         "phpstan/phpdoc-parser": "^2.0",
+        "stripe/stripe-php": "^17.2",
         "symfony/asset": "7.2.*",
         "symfony/asset-mapper": "7.2.*",
         "symfony/console": "7.2.*",
@@ -46,7 +47,8 @@
         "symfony/yaml": "7.2.*",
         "symfonycasts/verify-email-bundle": "^1.17",
         "twig/extra-bundle": "^2.12|^3.0",
-        "twig/twig": "^2.12|^3.0"
+        "twig/twig": "^2.12|^3.0",
+      "ext-cassandra": "*"
     },
     "config": {
         "allow-plugins": {

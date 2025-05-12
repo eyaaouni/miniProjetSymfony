@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\LivresRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -41,6 +43,17 @@ class Livres
     #[ORM\ManyToOne(targetEntity: Categorie::class, inversedBy: 'livres')]
     #[ORM\JoinColumn(name: "cat_id", referencedColumnName: "id")]
     private ?Categorie $categorie = null;
+
+    /**
+     * @var Collection<int, DetailCommande>
+     */
+    #[ORM\OneToMany(targetEntity: DetailCommande::class, mappedBy: 'livre')]
+    private Collection $detailCommandes;
+
+    public function __construct()
+    {
+        $this->detailCommandes = new ArrayCollection();
+    }
 
 
     public function getId(): ?int
@@ -152,6 +165,36 @@ class Livres
     public function setCategorie(?Categorie $categorie): static
     {
         $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DetailCommande>
+     */
+    public function getDetailCommandes(): Collection
+    {
+        return $this->detailCommandes;
+    }
+
+    public function addDetailCommande(DetailCommande $detailCommande): static
+    {
+        if (!$this->detailCommandes->contains($detailCommande)) {
+            $this->detailCommandes->add($detailCommande);
+            $detailCommande->setLivre($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDetailCommande(DetailCommande $detailCommande): static
+    {
+        if ($this->detailCommandes->removeElement($detailCommande)) {
+            // set the owning side to null (unless already changed)
+            if ($detailCommande->getLivre() === $this) {
+                $detailCommande->setLivre(null);
+            }
+        }
 
         return $this;
     }

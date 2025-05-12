@@ -3,8 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\CommandeRepository;
+
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: CommandeRepository::class)]
 class Commande
@@ -28,6 +31,18 @@ class Commande
 
     #[ORM\Column]
     private ?float $total = null;
+    #[ORM\OneToMany(targetEntity: DetailCommande::class, mappedBy: 'commande', cascade: ['persist', 'remove'])]
+    private Collection $details;
+
+    public function __construct()
+    {
+        $this->details = new ArrayCollection();
+    }
+
+    public function getDetails(): Collection
+    {
+        return $this->details;
+    }
 
     public function getId(): ?int
     {

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Livres;
 use App\Form\livreType;
 use App\Form\LivresType;
+use App\Repository\CommandeRepository;
 use App\Repository\livreRepository;
 use App\Repository\LivresRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -108,4 +109,21 @@ public function all(LivresRepository $rep, PaginatorInterface $paginator, Reques
             'f' => $form->createView(),
         ]);
     }
+
+
+    #[Route('/admin/dashboard', name: 'admin_dashboard')]
+    public function dashboard(CommandeRepository $commandeRepo): Response
+    {
+        // Livre le plus vendu
+        $topLivre = $commandeRepo->findTopVente();
+
+        // Nombre de commandes par mois
+        $commandesParMois = $commandeRepo->countCommandesParMois();
+
+        return $this->render('livres/dashboard.html.twig', [
+            'topLivre' => $topLivre,
+            'commandesParMois' => $commandesParMois,
+        ]);
+    }
+
 }
