@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<h2>Commande enregistrée</h2>
+<p>Mode de paiement choisi : <strong>{{ mode }}</strong></p>
+<p>Total à payer : <strong>{{ total }} €</strong></p>
+
+{% if mode == 'Virement bancaire' %}
+    <p>Veuillez effectuer un virement au compte suivant :</p>
+    <ul>
+        <li>IBAN : FR76 3000 4000 5000 0000 0000 123</li>
+        <li>BIC : BNPAFRPP</li>
+    </ul>
+{% else %}
+    <p>Vous paierez lors de la livraison.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<h2>Choisissez votre mode de paiement</h2>
+<form action="{{ path('client_commande_valider') }}" method="POST">
+    {% for mode in modes %}
+        <label>
+            <input type="radio" name="mode_paiement" value="{{ mode }}" required>
+            {{ mode }}
+        </label><br>
+    {% endfor %}
+    <button type="submit">Valider la commande</button>
+</form>
+{% endblock %}

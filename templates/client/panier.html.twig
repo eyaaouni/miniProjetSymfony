@@ -9,14 +9,14 @@
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 <div>
                     <strong>{{ item.livre.titre }}</strong><br>
-                    <small>Quantité : {{ item.quantity }} | Prix unitaire : {{ item.livre.prix }} €</small>
+                    <small>Quantité : {{ item.quantity }} | Prix unitaire : {{ item.livre.prix }} dt</small>
                 </div>
-                <span class="badge bg-primary rounded-pill">{{ (item.livre.prix * item.quantity)|number_format(2, ',', '.') }} €</span>
+                <span class="badge bg-primary rounded-pill">{{ (item.livre.prix * item.quantity)|number_format(2, ',', '.') }} dt</span>
             </li>
         {% endfor %}
     </ul>
 
-    <p class="fs-5"><strong>Total : {{ total|number_format(2, ',', '.') }} €</strong></p>
+    <p class="fs-5"><strong>Total : {{ total|number_format(2, ',', '.') }} dt</strong></p>
 {% else %}
     <div class="alert alert-info">Votre panier est vide.</div>
 {% endif %}
@@ -24,4 +24,10 @@
 <a href="{{ path('client_livres_list') }}" class="btn btn-success">
     Continuer vos achats
 </a>
+    {% if livres is not empty %}
+        <a href="{{ path('client_commande_paiement') }}" class="btn btn-primary mt-3">
+            🧾 Passer à l'étape de paiement
+        </a>
+    {% endif %}
+
 {% endblock %}

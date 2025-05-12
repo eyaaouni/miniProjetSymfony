@@ -5,17 +5,25 @@
         <h1 class="mb-4">Liste des Livres</h1>
 
         <form method="get" action="{{ path('client_livres_list') }}" class="mb-4">
-            <div class="input-group">
-                <input type="text" name="search" class="form-control" placeholder="Rechercher un livre..." value="{{ app.request.get('search') }}">
-                <button class="btn btn-primary" type="submit">Rechercher</button>
+            <div class="row g-2">
+                <div class="col-md-4">
+                    <input type="text" name="titre" class="form-control" placeholder="Titre" value="{{ app.request.get('titre') }}">
+                </div>
+                <div class="col-md-4">
+                    <input type="text" name="auteur" class="form-control" placeholder="Auteur" value="{{ app.request.get('auteur') }}">
+                </div>
+                <div class="col-md-4">
+                    <input type="text" name="categorie" class="form-control" placeholder="Catégorie" value="{{ app.request.get('categorie') }}">
+                </div>
             </div>
-            <div class="mt-4">
-                <a href="{{ path('client_panier_show') }}" class="btn btn-outline-primary">Voir mon panier</a>
+            <div class="mt-3">
+                <button class="btn btn-primary" type="submit">Rechercher</button>
+                <a href="{{ path('client_panier_show') }}" class="btn btn-outline-primary ms-3">Voir mon panier</a>
             </div>
         </form>
 
         <div class="row">
-            {% for livre in livres %}
+            {% for livre in pagination %}
                 <div class="col-md-4">
                     <div class="card mb-4 shadow-sm">
                         {% if livre.image %}
@@ -29,8 +37,9 @@
                                 <small class="text-muted">{{ livre.editeur }}</small><br>
                                 {{ livre.resume|slice(0, 100) ~ '...' }}
                             </p>
-                            <p><strong>{{ livre.prix }} €</strong></p>
-                            <a href="{{ path('client_panier_add', {id: livre.id}) }}" class="btn btn-success">Ajouter au panier</a>
+                            <p><strong>{{ livre.prix }} dt</strong></p>
+                            <a href="{{ path('client_livres_show', {id: livre.id}) }}" class="btn btn-success">Voir détail</a>
+                            <a href="{{ path('client_panier_add', {id: livre.id}) }}" class="btn btn-danger">Ajouter au panier</a>
                         </div>
                     </div>
                 </div>
@@ -43,6 +52,9 @@
             {% endfor %}
         </div>
 
-
+        <!-- Pagination -->
+        <div class="mt-4">
+            {{ knp_pagination_render(pagination) }}
+        </div>
     </div>
 {% endblock %}

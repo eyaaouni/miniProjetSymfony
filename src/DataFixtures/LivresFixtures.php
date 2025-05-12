@@ -34,7 +34,7 @@ class LivresFixtures extends Fixture
             $livre->setTitre($titre)
                 ->setIsbn($faker->isbn13())
                 ->setEditeur($faker->company)
-                ->setPrix($faker->randomFloat(2, 0, 100))
+                ->setPrix($faker->randomFloat(2, 0, 100),)
                 ->setDateEdition($faker->dateTimeThisCentury)
                 ->setImage("https://bookthumbs.com/thumbs".$i . "/200/300")
                 ->setResume($faker->text)
