@@ -54,6 +54,12 @@
                         <a class="nav-link" href="{{ path('app_login') }}">Connexion</a>
                     </li>
                 {% endif %}
+
+                {% if is_granted('ROLE_USER') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('chatbot') }}">Chatbot</a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </div>

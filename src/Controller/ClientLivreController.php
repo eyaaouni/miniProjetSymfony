@@ -199,8 +199,6 @@ class ClientLivreController extends AbstractController
             ->orderBy('c.dateCommande', 'DESC')
             ->getQuery()
             ->getResult();
-
-
         return $this->render('client/historique_commandes.html.twig', [
             'commandes' => $commandes
         ]);

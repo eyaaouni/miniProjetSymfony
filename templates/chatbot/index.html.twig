@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <style>
+        .chat-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .chat-response {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+        }
+        .chat-form {
+            display: flex;
+            gap: 10px;
+        }
+        .chat-form input {
+            flex: 1;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="chat-container">
+        <h1 class="text-center mb-4">Chatbot</h1>
+        <div class="chat-response">
+            <p>{{ response }}</p>
+        </div>
+        <form method="post" class="chat-form">
+            <input type="text" name="message" class="form-control" placeholder="Écris ton message ici..." required>
+            <button type="submit" class="btn btn-primary">Envoyer</button>
+        </form>
+    </div>
+{% endblock %} 
